@@ -1,0 +1,17 @@
+Revision history for Riap
+
+1.1.2	 2012-01-17
+
+	 Rename distribution from Rinci-HTTP as Riap.
+
+
+1.1.1    2012-01-15
+
+         No spec changes. Fix misplaced section in POD.
+
+
+1.1.0    2012-01-15
+
+         First release. Renamed from Sub::Spec::HTTP. Now follow the Rinci
+         specification instead of Sub::Spec. Generalized to perform actions on
+         any code entities instead of just functions. Change terminologies.
