@@ -16,4 +16,4 @@ name: Riap
 resources:
   homepage: http://metacpan.org/release/Riap
   repository: http://github.com/sharyanto/perl-Riap
-version: 1.1.2
+version: 1.1.3

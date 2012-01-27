@@ -1,5 +1,7 @@
 package Riap::HTTP; # just to make PodWeaver happy
 
+our $VERSION = '1.1.3'; # VERSION
+
 1;
 # ABSTRACT: Riap over HTTP
 
@@ -13,12 +15,43 @@ Riap::HTTP - Riap over HTTP
 
 =head1 VERSION
 
-version 1.1.2
+version 1.1.3
 
 =head1 DESCRIPTION
 
+Riap::HTTP is designed to be implemented by API service providers. It allows
+custom URL layout and some additional features like logging, while utilizing
+various features already in HTTP (authentication, encryption using HTTPS, etc.)
+
 Server listens to HTTP requests, parses them into Riap requests, executes the
 Riap requests, and sends the results to clients.
+
+=head2 Additional Riap request keys
+
+=item * ofmt => STR
+
+Specify result ("output") format. Defaults to C<json>, which the server MUST
+accept. Server can accept additional result formats if it wants to, like
+C<yaml>, C<xml>, or C<phps> (PHP serialization format).
+
+Server should give response in C<json> if requested result format is not
+supported.
+
+=head2 Additional information keys must returned by server
+
+These are keys in the information hash returned by the C<info> action.
+
+=over 4
+
+=item * ifmts => ARRAY OF STR
+
+Supported input formats in HTTP request body.
+
+=item * ofmts => ARRAY OF STR
+
+Supported output formats.
+
+=back
 
 =head2 Parsing Riap request from HTTP request
 
@@ -50,7 +83,7 @@ keys, using C<-riap-*> syntax) from request variables. For example:
 might result in the following Riap request:
 
  {
-  "uri": 'pm:///PKG/SUBPKG/FUN',
+  "uri": 'pm:/My/App/PKG/SUBPKG/FUN',
   "action": 'call',
   "args": {"a1":1, "a2":[1,2]},
  }
@@ -62,7 +95,7 @@ Another example:
 will result in the following Rinci request:
 
  {
-  "uri": 'pm:///PKG/FUN',
+  "uri": 'pm:/PKG/FUN',
   "action": 'complete',
   "arg": 'a1',
   "word": 'x',
@@ -74,14 +107,15 @@ will result in the following Rinci request:
 
 =head1 ABSTRACT
 
-This document specifies using HTTP as the transport layer for L<Riap>.
+This document specifies using HTTP/HTTPS as the transport layer for L<Riap>, or
+Riap::HTTP for short.
 
 =head1 LOGGING
 
 Riap over HTTP also allows a mechanism to pass logging messages during function
 calls by using HTTP chunked response.
 
-Two additional keys are recognized using this transport:
+Two additional Riap request keys are recognized for this:
 
 =over 4
 
@@ -149,6 +183,10 @@ as HTTP status. But this means losing the ability to differentiate between the
 two. We want the client to be able to differentiate whether the 500 (Internal
 server error) or 404 (Not found) code it is getting is from the HTTP or from the
 enveloped result.
+
+=head1 SEE ALSO
+
+L<Riap::TCP>
 
 =head1 AUTHOR
 

@@ -1,5 +1,7 @@
 package Riap; # just to make PodWeaver happy
 
+our $VERSION = '1.1.3'; # VERSION
+
 1;
 # ABSTRACT: Rinci access protocol
 
@@ -13,12 +15,15 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-version 1.1.2
+version 1.1.3
 
 =head1 DESCRIPTION
 
 Rinci access protocol (Riap for short), is a client/server, request/response
-protocol for requesting metadata and performing actions on code entities.
+protocol for requesting metadata and performing actions on code entities. It is
+modelled closely after HTTP, but a different protocol. It can be layered on top
+of HTTP (as its transport protocol) but can also uses other transports,
+including direct TCP. L<Riap::HTTP> explains how Riap can be used over HTTP.
 
 The server side is viewed as being a tree of code entities, with a package
 entity at the root. The other entities, such as subpackages, functions,
@@ -29,9 +34,6 @@ actions that can be performed on code entities, like C<call> on functions to
 perform remote call. The protocol can be extended by introducing more actions.
 The list of performable actions, as well as other information, can be discovered
 by performing an C<info> action on the code entity first.
-
-The protocol can use over any transport protocol, like HTTP or direct TCP.
-L<Riap::HTTP> explains how Riap can be used over HTTP.
 
 =head1 SPECIFICATION VERSION
 
@@ -45,6 +47,13 @@ protocol for requesting metadata and performing actions on code entities.
 Examples are written in JSON (sometimes with added comments), but data
 structures can actually be encoded using other formats.
 
+=head1 STATUS
+
+The 1.1 specification is expected to stabilize after a few more iterations,
+perhaps around 1.1.10 or so. Before that, there will probably a few more
+incompatible changes, especially since L<Riap::TCP> is new, so caveat
+implementor.
+
 =head1 TERMINOLOGIES
 
 =over 4
@@ -55,50 +64,94 @@ structures can actually be encoded using other formats.
 
 =item * Response
 
-Response is an enveloped result as defined by the L<Rinci::function>
+Response is an enveloped result as defined in the L<Rinci::function>
 specification.
 
 =item * Request
 
-A Riap request is a mapping of request keys and their values. Server should
-return 400 status if required keys are missing, unknown keys are sent, or keys
-contain invalid values.
+A Riap request is modelled after HTTP request. It consists of an action
+(analogous to HTTP request method), code entity URI, protocol version, and zero
+or more extra arguments (analogous to HTTP headers). Some extra arguments might
+be required, depending on the action.
+
+For simplicity, the request can be expressed as a hash (or dictionary) of
+key/value pairs. There should at least be these keys: C<action>, C<uri>, and
+C<v> (for protocol version). This also means the extra arguments cannot have
+those names. They must also start with letters or underscores followed by zero
+or more letters/underscores/digits.
+
+Server should return 400 status if required keys are missing, unknown keys are
+sent, or keys contain invalid values.
 
 =back
 
+=head1 RIAP URI SCHEME
+
+To refer to code entities, a new URI scheme C<riap> is defined. URI scheme can
+be suffixed with transport, e.g. C<riap+tcp> (see L<Riap::TCP>), while
+C<riap+http>/C<riap+https> to refer to Riap over HTTP/HTTPS (see L<Riap::HTTP>).
+
+Without transport, the host part of URI can be used to refer to host language.
+For example:
+
+ # refer to Text::sprintfn module
+ riap://perl/Text/sprintfn/
+
+ # refer to sprintf function in Text::sprintfn
+ riap://perl/Text/sprintfn/sprintfn
+
+ # refer to PHP variable
+ riap://php/$var
+
+Scheme/host and parts of path are optional if you refer from the same host
+language or module. Examples:
+
+ # refer to Text::sprintfn module from another Perl module
+ /Text/sprintfn/
+
+ # refer to Text::Wrap module from Text::sprintfn
+ ../Wrap/
+
+If transport is used, host (and port) means network host (and port) as usual:
+
+ riap+tcp://localhost:7001/Foo/bar
+ riap+http://gudangapi.com/tax/id/validate_npwp
+
+Lest there is confusion, with Riap over HTTP/HTTPS there is also the
+<http>/C<https> URLs to access the services. The URI path for these do not
+necessarily map directly to code entities like in C<riap> URIs, they may also
+support additional features, as each service provider can choose custom URL
+layout. Example:
+
+ # access tax::id::validate_npwp function, call with arguments
+ http://gudangapi.com/ga/tax.id.validate_npwp?npwp=123456
+
+ # namespace/module can also be omitted when function name is unique. arguments
+ # can also be specified by position
+ http://gudangapi.com/ga/validate_npwp/123456
+
 =head1 THE REQUEST
 
-The Riap request is a mapping of request keys and their values. Some recognized
-request keys:
+As mentioned previously, the Riap request is a mapping of request keys and their
+values. Some request keys:
 
 =over 4
 
 =item * v => FLOAT
 
-Required. Specify Riap protocol version. Currently must have the value of C<1.1>
-
-The server should return 502 status if protocol version is not supported.
+Required. Specify Riap protocol version. Currently must have the value of
+C<1.1>. The server should return 502 status if protocol version is not
+supported.
 
 =item * uri => STR
 
 Required. Specify the location to code entity. It is either a schemeless URI
-(e.g. C</Package/SubPackage/func>) or a URI with a scheme (e.g.
-C<pm:///Foo/Bar/func> which might point to a Perl function accessible by the
-Perl-based server). The URI with a scheme might point to a remote code entity
-(e.g. C<http://example.org/api/Foo/Bar/func>, in which case the server can
-decide to proxy it for the client or not.
+(e.g. C</Package/SubPackage/func>) to refer to "local" code entity or URI with a
+scheme to refer to a remote entity, e.g. C<http://example.org/api/Foo/Bar/func>,
+in which case the server can decide to proxy it for the client or not.
 
 The server should return 404 status if B<uri> does not map to an existing code
-entity.
-
-=item * ofmt => STR
-
-Specify result ("output") format. Defaults to C<json>, which the server MUST
-accept. Server can accept additional result formats if it wants to, like
-C<yaml>, C<xml>, or C<phps> (PHP serialization format).
-
-Server should give response in C<json> if requested result format is not
-supported.
+entity, or 403 if C<uri> is forbidden.
 
 =item * action => STR
 
@@ -136,15 +189,6 @@ enveloped with a 200 status):
 
   // actions available for this entity
   "acts": ["info", "call", "complete"],
-
-  "defact": "call",
-
-  // supported input formats for HTTP request body,
-  // for value of C<args> request key
-  "ifmt": ["json", "yaml", "phps"],
-
-  // supported result ("output") formats
-  "ofmt": ["json", "yaml", "phps", "text", "html"],
 
   // server base URL
   "srvurl": "http://localhost:5000/api/"
@@ -217,7 +261,7 @@ Hash, optional, function arguments, defaults to C<{}>.
 
 Complete function argument value, a la Bash tab completion where you have a
 semicompleted word and request possible values started by that word. Additional
-Rinci request keys include:
+Riap request keys include:
 
 =over 4
 
