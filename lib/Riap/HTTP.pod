@@ -1,6 +1,6 @@
 package Riap::HTTP; # just to make PodWeaver happy
 
-our $VERSION = '1.1.4'; # VERSION
+our $VERSION = '1.1.5'; # VERSION
 
 1;
 # ABSTRACT: Riap over HTTP
@@ -15,7 +15,7 @@ Riap::HTTP - Riap over HTTP
 
 =head1 VERSION
 
-version 1.1.4
+version 1.1.5
 
 =head1 DESCRIPTION
 
@@ -72,9 +72,10 @@ accept at least body of type C<application/json>. It can accept additional types
 if it wants, e.g. C<text/yaml> or C<application/vnd.php.serialized>.
 
 The server can also accept Rinci request keys or function arguments using other
-means, for example, L<Serabi>, a Perl server implementation, allows parsing
-C<uri> from URI path, and function arguments (as well as other Riap request
-keys, using C<-riap-*> syntax) from request variables. For example:
+means, for example, L<Plack::Access::HTTP::Server>, a Perl server
+implementation, allows parsing C<uri> from URI path, and function arguments (as
+well as other Riap request keys, using C<-riap-*> syntax) from request
+variables. For example:
 
  http://HOST/api/PKG/SUBPKG/FUN?a1=1&a2:j=[1,%202]
 
@@ -150,7 +151,7 @@ because of missing argument:
  --- Response ---
  HTTP/1.0 200 OK
  Date: Sat, 14 Jan 2012 17:11:40 GMT
- Server: Serabi/1.0
+ Server: Perinci::Access::HTTP::Server/0.01
  Content-Type: application/json
 
  [400,"Missing required argument: b"]
@@ -166,7 +167,7 @@ arguments through the X-Riap-Args HTTP header:
  --- Response ---
  HTTP/1.0 200 OK
  Date: Sat, 14 Jan 2012 17:11:50 GMT
- Server: Serabi/1.0
+ Server: Perinci::Access::HTTP::Server/0.01
  Content-Type: application/json
 
  [200,"OK",6]
@@ -179,8 +180,33 @@ Since enveloped result is modeled somewhat closely after HTTP message,
 especially the status code, it might make sense to use the status code directly
 as HTTP status. But this means losing the ability to differentiate between the
 two. We want the client to be able to differentiate whether the 500 (Internal
-server error) or 404 (Not found) code it is getting is from the HTTP or from the
-enveloped result.
+server error) or 404 (Not found) code it is getting is from the HTTP
+server/proxies/client or from the enveloped result.
+
+=head2 Riap/Riap::HTTP vs REST? Which one to choose for my web service?
+
+Riap maps code entities (packages and functions), while REST maps resources
+(like business entities) to URI's. For example:
+
+ # Riap
+ /User/             # package
+ /User/list_users   # function
+ /User/create_user  # function
+
+ # REST (verb + URI)
+ GET /user          # list users
+ GET /user/123      # get specific user
+ POST /user         # create a new user
+ PUT /user/123      # modify user
+ DELETE /user/123
+
+Riap is more RPC style, and it is more straightforward if you want to export a
+set of code modules and functions as API. But it also defines standard and
+extensible "verbs" (actions). It also helps service discoverability and
+self-description due to the C<list> action and the rich Rinci metadata.
+Riap::HTTP can also use custom routing so if you want you can make it use REST
+style, while still fulfilling request with Riap in the backend. For example, see
+L<Serabi> in Perl.
 
 =head1 SEE ALSO
 
