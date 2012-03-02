@@ -1,6 +1,6 @@
 package Riap; # just to make PodWeaver happy
 
-our $VERSION = '1.1.7'; # VERSION
+our $VERSION = '1.1.8'; # VERSION
 
 1;
 # ABSTRACT: Rinci access protocol
@@ -15,25 +15,22 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-version 1.1.7
+version 1.1.8
 
 =head1 DESCRIPTION
 
 Rinci access protocol (Riap for short), is a client/server, request/response
 protocol for requesting metadata and performing actions on code entities. It is
-modelled closely after HTTP, but a different protocol. It can be layered on top
-of HTTP (as its transport protocol) but can also uses other transports,
+modeled closely after HTTP, but is a different protocol. It can be layered on
+top of HTTP (as its transport protocol) but can also use other transports,
 including direct TCP. L<Riap::HTTP> explains how Riap can be used over HTTP.
 
 The server side is viewed as being a tree of code entities, with a package
-entity at the root. The other entities, such as subpackages, functions,
-variables, etc are discovered by client by performing a C<actions> action on a
-package entity. The client can also perform a C<meta> action on any code entity
-to get its metadata, as specified by the L<Rinci> specification. There are other
-actions that can be performed on code entities, like C<call> on functions to
-perform remote call. The protocol can be extended by introducing more actions.
-The list of performable actions, as well as other information, can be discovered
-by performing an C<info> action on the code entity first.
+entity at the root. Other entities (such as subpackages, functions, variables)
+are discoverable by performing C<list> actions on package entities. Entity's
+metadata can be retrieved using the C<meta> action. There are other actions
+defined in the specification; and the protocol can be extended by introducing
+more actions.
 
 =head1 SPECIFICATION VERSION
 
@@ -87,8 +84,9 @@ sent, or keys contain invalid values.
 =head1 RIAP URI SCHEME
 
 To refer to code entities, a new URI scheme C<riap> is defined. URI scheme can
-be suffixed with transport, e.g. C<riap+tcp> (see L<Riap::TCP>), while
-C<riap+http>/C<riap+https> to refer to Riap over HTTP/HTTPS (see L<Riap::HTTP>).
+be suffixed with transport, e.g. C<riap+tcp> for Riap over direct TCP (see
+L<Riap::TCP>) or C<riap+http>/C<riap+https> for Riap over HTTP/HTTPS (see
+L<Riap::HTTP>).
 
 Without transport, the host part of URI can be used to refer to host language.
 For example:
@@ -123,7 +121,7 @@ If transport is used, host (and port) means network host (and port) as usual:
  riap+http://gudangapi.com/tax/id/npwp/validate_npwp
 
 Lest there is confusion, with Riap over HTTP/HTTPS there is also the
-<http>/C<https> URLs to access the services. The URI path for these do not
+C<http>/C<https> URLs to access the services. The URI path for these do not
 necessarily map directly to code entities like in C<riap> URIs, they may also
 support additional features, as each service provider can choose custom URL
 layout. Example:
@@ -195,8 +193,7 @@ enveloped with a 200 status):
   }
  ]
 
-Server may add additional information keys. Transport specification like
-L<Riap::TCP> or L<Riap::HTTP> might require additional keys.
+Server may add additional information keys.
 
 =head2 Action: B<actions>
 
@@ -228,7 +225,8 @@ required/optional request keys (XXX not yet specified).
 =head2 Action: B<meta>
 
 Return Rinci metadata for the code entity. When the entity does not have
-metadata, server should return 534 status (metadata not found).
+metadata, server should return 404 status or better yet 534 (metadata not
+found).
 
 =head1 ACTIONS FOR C<package> ENTITIES
 
@@ -271,6 +269,23 @@ set to C<function> and C<q> to C<multiply>, and C<detail> set to true:
     "type": "function",
     "summary": "Multiply several numbers"}
   ]
+ ]
+
+=head2 Action: B<child_metas>
+
+Get metadata for all the children entities of the package entity.
+
+This action can reduce the number of round-trips, as opposed to client
+performing C<list> action followed by C<meta> for each child.
+
+Example, an C<child_metas> action on the top namespace C</> might return the
+following:
+
+ [200,"OK",
+  {
+   "pm:///Math":  {"v":1.1, "summary":"This is metadata for Math"},
+  ,"pm:///Utils": {"v":1.1, "summary":"This is metadata for Utils"}
+  }
  ]
 
 =head1 ACTIONS FOR C<function> ENTITIES

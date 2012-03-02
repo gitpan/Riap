@@ -1,6 +1,6 @@
 package Riap::TCP; # just to make PodWeaver happy
 
-our $VERSION = '1.1.7'; # VERSION
+our $VERSION = '1.1.8'; # VERSION
 
 1;
 # ABSTRACT: Riap over TCP
@@ -15,7 +15,7 @@ Riap::TCP - Riap over TCP
 
 =head1 VERSION
 
-version 1.1.7
+version 1.1.8
 
 =head1 DESCRIPTION
 
@@ -41,16 +41,6 @@ request can then be sent by client.
 
 If client/server sends an invalid request/response line, the connection can be
 closed.
-
-=head2 Additional info keys
-
-For the C<info> action on the root package entity, these additional keys MUST be
-returned by the server:
-
- {
-  // server's absolute URL
-  "srvurl": "riap+tcp://localhost:5000/",
- }
 
 =head1 PROTOCOL VERSION
 

@@ -1,6 +1,6 @@
 package Riap::HTTP; # just to make PodWeaver happy
 
-our $VERSION = '1.1.7'; # VERSION
+our $VERSION = '1.1.8'; # VERSION
 
 1;
 # ABSTRACT: Riap over HTTP
@@ -15,7 +15,7 @@ Riap::HTTP - Riap over HTTP
 
 =head1 VERSION
 
-version 1.1.7
+version 1.1.8
 
 =head1 DESCRIPTION
 
@@ -29,26 +29,37 @@ Riap requests, and sends the results to clients.
 
 =head2 Additional Riap request keys
 
+=over 4
+
 =item * fmt => STR
 
-Specify serialization format to use. Defaults to C<json>, which the server MUST
-accept. Server can accept additional result formats if it wants to, like
-C<yaml>, C<xml>, or C<phps> (PHP serialization format).
+Specify output serialization format to use. The format names are decided by the
+implementation, but server MUST support C<json> as the fallback. If unspecified,
+default in most cases should also be C<json>, but server can default to other
+format, like say L<HTML> or L<text>, for viewing convenience of certain clients
+like GUI browser. Server should detect appropriate default output format from
+C<Accept> HTTP request header.
 
-Server should give response in C<json> if requested result format is not
-supported.
+To find out what serializations are supported, client can perform an C<srvinfo>
+action.
 
-=head2 Additional info keys
+Server should fallback to C<json> if requested result format is not supported.
 
-For the C<info> action on the root package entity, these additional keys MUST be
-returned by the server:
+=back
+
+=head2 Additional actions
+
+=head3 Action: B<srvinfo>
+
+Just like C<info> action, but get information about the server instead. Server
+MUST at least return the following keys in the result hash.
 
  {
   // server's absolute URL
-  "srvurl": "riap+tcp://localhost:5000/",
+  "srvurl": "http://localhost:5000/",
 
-  // supported serialization formats
-  "fmt": ["json","yaml","phps"],
+  // supported formats
+  "fmt": ["Console","HTML","JSON","PHPSerialization","YAML","json"],
  }
 
 =head2 Parsing Riap request from HTTP request
@@ -64,25 +75,27 @@ value (notice the ending C<->), e.g.
 
  X-Riap-Args-j-: {"arg1":"val1","arg2":[1,2,3]}
 
-This allows the server to have its own URL scheme, while allowing a way for
+This allows the server to have its own URL scheme, while allowing a way for a
 common access mechanism.
 
 The server MUST also accept C<args> from HTTP request body. The server MUST
-accept at least body of type C<application/json>. It can accept additional types
-if it wants, e.g. C<text/yaml> or C<application/vnd.php.serialized>.
+accept at least body of type C<application/json>, but it can accept other types.
+The server MUST not interpret C<application/x-www-form-urlencoded> for this
+purpose (and interpret it as a normal web form). Server MUST return response 400
+if document type is not recognized.
 
 The server can also accept Rinci request keys or function arguments using other
-means, for example, L<Plack::Access::HTTP::Server>, a Perl server
-implementation, allows parsing C<uri> from URI path, and function arguments (as
-well as other Riap request keys, using C<-riap-*> syntax) from request
-variables. For example:
+means. For example, L<Plack::Middleware::PeriAHS::ParseRequest>, from Perl
+server implementation, allows parsing Riap request keys like C<uri> from URI
+path, and C<args> keys (as well as other Riap request keys, using C<-riap-*>
+syntax) from request variables. For example:
 
  http://HOST/api/PKG/SUBPKG/FUN?a1=1&a2:j=[1,%202]
 
 might result in the following Riap request:
 
  {
-  "uri": 'pm:/My/App/PKG/SUBPKG/FUN',
+  "uri": '/PKG/SUBPKG/FUN',
   "action": 'call',
   "args": {"a1":1, "a2":[1,2]},
  }
@@ -94,7 +107,7 @@ Another example:
 will result in the following Rinci request:
 
  {
-  "uri": 'pm:/PKG/FUN',
+  "uri": '/PKG/FUN',
   "action": 'complete_arg_val',
   "arg": 'a1',
   "word": 'x',
@@ -136,22 +149,22 @@ loglevel, so clients can parse/separate log message from result.
 
 =head1 EXAMPLES
 
-Below are some examples of what is sent and received on the wire. For these
-examples, the server has the following URL scheme
-http://example.org/api/v1/<URI>. It detects desired output format from the
-C<Accept> HTTP request header.
+Below are some examples of what is sent and received over the wire. For these
+examples, the server has the following URL scheme http://example.org/api/<URI>.
+Server also assume the default values for these Riap request keys so they do not
+have to be specified by client: C<v> (1.1), C<action> (call).
 
 Call a function, passing function arguments via query parameter, unsuccessfully
 because of missing argument:
 
  --- Request ---
- GET /api/v1/Math/multiply2?a=2 HTTP/1.0
+ GET /api/Math/multiply2?a=2 HTTP/1.0
  Accept: application/json
 
  --- Response ---
  HTTP/1.0 200 OK
  Date: Sat, 14 Jan 2012 17:11:40 GMT
- Server: Perinci::Access::HTTP::Server/0.01
+ Server: PeriAHS/0.01
  Content-Type: application/json
 
  [400,"Missing required argument: b"]
@@ -160,14 +173,14 @@ Call the same function, successfully this time. As a variation we pass function
 arguments through the X-Riap-Args HTTP header:
 
  --- Request ---
- GET /api/v1/Math/multiply2 HTTP/1.0
+ GET /api/Math/multiply2 HTTP/1.0
  X-Riap-Args-j-: {"a":2,"b":3}
  Accept: application/json
 
  --- Response ---
  HTTP/1.0 200 OK
  Date: Sat, 14 Jan 2012 17:11:50 GMT
- Server: Perinci::Access::HTTP::Server/0.01
+ Server: PeriAHS/0.01
  Content-Type: application/json
 
  [200,"OK",6]
@@ -197,7 +210,7 @@ Riap maps code entities (packages and functions), while REST maps resources
  GET /user          # list users
  GET /user/123      # get specific user
  POST /user         # create a new user
- PUT /user/123      # modify user
+ PATCH /user/123    # modify user
  DELETE /user/123
 
 Riap is more RPC style, and it is more straightforward if you want to export a
