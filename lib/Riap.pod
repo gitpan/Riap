@@ -1,6 +1,6 @@
 package Riap; # just to make PodWeaver happy
 
-our $VERSION = '1.1.8'; # VERSION
+our $VERSION = '1.1.9'; # VERSION
 
 1;
 # ABSTRACT: Rinci access protocol
@@ -15,7 +15,7 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-version 1.1.8
+version 1.1.9
 
 =head1 DESCRIPTION
 
@@ -253,19 +253,19 @@ B<description>, etc.
 Example, a C<list> action on the top namespace C</> might return the following:
 
  [200,"OK",
-  ["pm:///Math","pm:///Utils"]
+  ["pm:/Math","pm:/Utils"]
  ]
 
-Another example, a C<list> action on the C<pm:///Math> namespace, with C<type>
+Another example, a C<list> action on the C<pm:/Math> namespace, with C<type>
 set to C<function> and C<q> to C<multiply>, and C<detail> set to true:
 
  [200,"OK",
   [
-   {"uri": "pm:///Math/multiply2",
+   {"uri": "pm:/Math/multiply2",
     "type": "function",
     "summary": "Multiply two numbers"},
 
-   {"uri": "pm:///Math/multmany",
+   {"uri": "pm:/Math/multmany",
     "type": "function",
     "summary": "Multiply several numbers"}
   ]
@@ -283,8 +283,8 @@ following:
 
  [200,"OK",
   {
-   "pm:///Math":  {"v":1.1, "summary":"This is metadata for Math"},
-  ,"pm:///Utils": {"v":1.1, "summary":"This is metadata for Utils"}
+   "pm:/Math":  {"v":1.1, "summary":"This is metadata for Math"},
+  ,"pm:/Utils": {"v":1.1, "summary":"This is metadata for Utils"}
   }
  ]
 
@@ -336,6 +336,14 @@ When there is no completion, the server should return an empty list:
  [200,"OK",
   []
  ]
+
+=head1 ACTIONS FOR C<variable> ENTITIES
+
+Below are actions that are available for the C<variable> entities.
+
+=head2 Action: B<get>
+
+Get variable value.
 
 =head1 FAQ
 
