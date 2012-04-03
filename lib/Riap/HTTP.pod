@@ -1,6 +1,6 @@
 package Riap::HTTP; # just to make PodWeaver happy
 
-our $VERSION = '1.1.9'; # VERSION
+our $VERSION = '1.1.10'; # VERSION
 
 1;
 # ABSTRACT: Riap over HTTP
@@ -15,7 +15,7 @@ Riap::HTTP - Riap over HTTP
 
 =head1 VERSION
 
-version 1.1.9
+version 1.1.10
 
 =head1 DESCRIPTION
 

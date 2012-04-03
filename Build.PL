@@ -17,7 +17,7 @@ my %module_build_args = (
     "Steven Haryanto <stevenharyanto\@gmail.com>"
   ],
   "dist_name" => "Riap",
-  "dist_version" => "1.1.9",
+  "dist_version" => "1.1.10",
   "license" => "perl",
   "module_name" => "Riap",
   "recommends" => {},
