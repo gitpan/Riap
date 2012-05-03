@@ -3,6 +3,7 @@ Changes
 LICENSE
 MANIFEST
 MANIFEST.SKIP
+META.json
 META.yml
 README
 dist.ini
@@ -10,6 +11,7 @@ lib/Riap.pm
 lib/Riap.pod
 lib/Riap/HTTP.pod
 lib/Riap/TCP.pod
+lib/Riap/Transaction.pod
 t/00-compile.t
 t/release-pod-coverage.t
 t/release-pod-syntax.t

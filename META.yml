@@ -14,8 +14,8 @@ meta-spec:
   version: 1.4
 name: Riap
 requires:
-  Rinci: 1.1.0
+  Rinci: 1.1.16
 resources:
   homepage: http://metacpan.org/release/Riap
   repository: http://github.com/sharyanto/perl-Riap
-version: 1.1.11
+version: 1.1.12
