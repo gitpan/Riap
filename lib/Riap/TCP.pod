@@ -1,6 +1,6 @@
 package Riap::TCP; # just to make PodWeaver happy
 
-our $VERSION = '1.1.12'; # VERSION
+our $VERSION = '1.1.13'; # VERSION
 
 1;
 # ABSTRACT: Riap over TCP
@@ -15,7 +15,7 @@ Riap::TCP - Riap over TCP
 
 =head1 VERSION
 
-version 1.1.12
+version 1.1.13
 
 =head1 DESCRIPTION
 
