@@ -17,13 +17,13 @@ my %module_build_args = (
     "Steven Haryanto <stevenharyanto\@gmail.com>"
   ],
   "dist_name" => "Riap",
-  "dist_version" => "1.1.13",
+  "dist_version" => "1.1.14",
   "license" => "perl",
   "module_name" => "Riap",
   "recommends" => {},
   "recursive_test_files" => 1,
   "requires" => {
-    "Rinci" => "1.1.17"
+    "Rinci" => "1.1.19"
   },
   "script_files" => []
 );

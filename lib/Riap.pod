@@ -1,6 +1,6 @@
 package Riap; # just to make PodWeaver happy
 
-our $VERSION = '1.1.13'; # VERSION
+our $VERSION = '1.1.14'; # VERSION
 
 1;
 # ABSTRACT: Rinci access protocol
@@ -15,7 +15,7 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-version 1.1.13
+version 1.1.14
 
 =head1 DESCRIPTION
 
@@ -137,8 +137,7 @@ features, as each service provider can choose custom URL layout. Example:
  http://gudangapi.com/ga/validate_npwp/123456
 
 However, any Riap request and any code entity URI can still be requested from
-any http/https URL following the Riap::HTTP protocol. See B<Riap::HTTP> for more
-details.
+any http/https URL following the L<Riap::HTTP> protocol..
 
 =head1 THE REQUEST
 
