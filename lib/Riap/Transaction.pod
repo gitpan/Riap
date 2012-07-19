@@ -1,6 +1,6 @@
 package Riap::Transaction; # just to make PodWeaver happy
 
-our $VERSION = '1.1.14'; # VERSION
+our $VERSION = '1.1.15'; # VERSION
 
 1;
 # ABSTRACT: Transactions over Riap
@@ -15,7 +15,7 @@ Riap::Transaction - Transactions over Riap
 
 =head1 VERSION
 
-version 1.1.14
+version 1.1.15
 
 =head1 DESCRIPTION
 
@@ -212,11 +212,11 @@ Example:
  [200, "OK",
   [
    {"tx_id": "TX1", "tx_status":"C", "tx_start_time":1336043060,
-    "tx_end_time":1336043065, "tx_summary":"Some summary"},
+    "tx_commit_time":1336043065, "tx_summary":"Some summary"},
    {"tx_id": "TX2", "tx_status":"C", "tx_start_time":1336043070,
-    "tx_end_time":1336043071, "tx_summary":null},
+    "tx_commit_time":1336043071, "tx_summary":null},
    {"tx_id": "TX3", "tx_status":"i", "tx_start_time":1336043090,
-    "tx_end_time":null, "tx_summary":"Some summary"},
+    "tx_commit_time":null, "tx_summary":"Some summary"},
   ]
  ]
 
@@ -225,24 +225,21 @@ Example:
 Optional Riap request keys: C<tx_id>.
 
 Undo a committed transaction (defaults to the newest committed transaction).
-Transaction must already be committed. Will do nothing if transaction is already
-undone.
+Transaction must already be committed.
 
 =head2 Action: B<redo>
 
 Optional Riap request keys: C<tx_id>.
 
 Redo a committed transaction (defaults to the newest undone committed
-transaction). Transaction must already be committed . Will do nothing if
-transaction is not undone.
+transaction). Transaction must already be committed.
 
 =head2 Action: B<discard_tx>
 
 Additional required Riap request keys: C<tx_id>.
 
 Discard a committed transaction from the transaction manager. Transaction must
-be already committed. If transaction is in progress or aborted, it will be
-rolled back.
+be already committed or committed+undone.
 
 =head2 Action: B<discard_all_txs>
 
