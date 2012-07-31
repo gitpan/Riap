@@ -10,7 +10,7 @@ dist.ini
 lib/Riap.pm
 lib/Riap.pod
 lib/Riap/HTTP.pod
-lib/Riap/TCP.pod
+lib/Riap/Simple.pod
 lib/Riap/Transaction.pod
 t/00-compile.t
 t/release-pod-coverage.t

@@ -1,6 +1,6 @@
 package Riap::HTTP; # just to make PodWeaver happy
 
-our $VERSION = '1.1.15'; # VERSION
+our $VERSION = '1.1.16'; # VERSION
 
 1;
 # ABSTRACT: Riap over HTTP
@@ -15,14 +15,14 @@ Riap::HTTP - Riap over HTTP
 
 =head1 VERSION
 
-version 1.1.15
+version 1.1.16
 
 =head1 DESCRIPTION
 
 Riap::HTTP is designed to be implemented by API service providers. It allows
 features like custom URL layout, multiple serialization format, and logging;
 while depends on HTTP for other features like authentication, encryption
-(HTTPS), etc. For a more lightweight alternative, look at L<Riap::TCP>.
+(HTTPS), etc. For a more lightweight alternative, look at L<Riap::Simple>.
 
 Server listens to HTTP requests, parses them into Riap requests, executes the
 Riap requests, and sends the results to clients.
@@ -223,7 +223,7 @@ L<Serabi> in Perl.
 
 =head1 SEE ALSO
 
-L<Riap::TCP>
+L<Riap::Simple>
 
 =head1 AUTHOR
 
