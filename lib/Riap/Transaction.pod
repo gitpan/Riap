@@ -1,6 +1,6 @@
 package Riap::Transaction; # just to make PodWeaver happy
 
-our $VERSION = '1.1.16'; # VERSION
+our $VERSION = '1.1.17'; # VERSION
 
 1;
 # ABSTRACT: Transactions over Riap
@@ -15,7 +15,7 @@ Riap::Transaction - Transactions over Riap
 
 =head1 VERSION
 
-version 1.1.16
+version 1.1.17
 
 =head1 DESCRIPTION
 
