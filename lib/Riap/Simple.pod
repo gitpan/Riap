@@ -1,6 +1,6 @@
 package Riap::Simple; # just to make PodWeaver happy
 
-our $VERSION = '1.1.17'; # VERSION
+our $VERSION = '1.1.18'; # VERSION
 
 1;
 # ABSTRACT: Simple Riap protocol over any stream socket
@@ -15,7 +15,7 @@ Riap::Simple - Simple Riap protocol over any stream socket
 
 =head1 VERSION
 
-version 1.1.17
+version 1.1.18
 
 =head1 DESCRIPTION
 

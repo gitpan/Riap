@@ -1,6 +1,6 @@
 package Riap; # just to make PodWeaver happy
 
-our $VERSION = '1.1.17'; # VERSION
+our $VERSION = '1.1.18'; # VERSION
 
 1;
 # ABSTRACT: Rinci access protocol
@@ -15,7 +15,7 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-version 1.1.17
+version 1.1.18
 
 =head1 DESCRIPTION
 
@@ -433,6 +433,20 @@ the same terms as the Perl 5 programming language system itself.
 
 =head1 CHANGES
 
+=head2 Version 1.1.18 (2012-08-17)
+
+=over 4
+
+=item *
+
+"Selamat ulang tahun ke-67, negaraku. Merdeka!"
+
+=item *
+
+Move most details of transaction behavior to Rinci::Transaction 1.1.24, to avoid duplication.
+
+=back
+
 =head2 Version 1.1.17 (2012-08-01)
 
 =over 4
@@ -623,7 +637,7 @@ Change required result keys of 'info' action.
 
 =item *
 
-Specify riap URI scheme (moved from Rinci). + Add Riap::TCP.
+Specify riap URI scheme (moved from Rinci). - Add Riap::TCP.
 
 =back
 
