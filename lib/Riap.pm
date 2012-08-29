@@ -1,6 +1,6 @@
 package Riap;
 
-our $VERSION = '1.1.18'; # VERSION
+our $VERSION = '1.1.19'; # VERSION
 
 1;
 # ABSTRACT: Rinci access protocol
@@ -14,7 +14,7 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-version 1.1.18
+version 1.1.19
 
 =head1 AUTHOR
 
