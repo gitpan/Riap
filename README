@@ -2,13 +2,27 @@ NAME
     Riap - Rinci access protocol
 
 VERSION
-    version 1.1.19
+    version 1.1.20
+
+HOMEPAGE
+    Please visit the project's homepage at
+    <https://metacpan.org/release/Riap>.
+
+SOURCE
+    Source repository is at <https://github.com/sharyanto/perl-Riap>.
+
+BUGS
+    Please report any bugs or feature requests on the bugtracker website
+    <https://rt.cpan.org/Public/Dist/Display.html?Name=Riap>
+
+    When submitting a bug or request, please include a test-file or a patch
+    to an existing test-file that illustrates the bug or desired feature.
 
 AUTHOR
     Steven Haryanto <stevenharyanto@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2012 by Steven Haryanto.
+    This software is copyright (c) 2013 by Steven Haryanto.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.

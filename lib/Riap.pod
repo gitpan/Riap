@@ -1,13 +1,15 @@
 package Riap; # just to make PodWeaver happy
 
-our $VERSION = '1.1.19'; # VERSION
+# VERSION
 
 1;
 # ABSTRACT: Rinci access protocol
 
-
 __END__
+
 =pod
+
+=encoding UTF-8
 
 =head1 NAME
 
@@ -15,7 +17,15 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-version 1.1.19
+version 1.1.20
+
+=head1 SYNOPSIS
+
+This document specifies a simple, extensible, client/server, request/response
+protocol for requesting metadata and performing actions on code entities.
+
+Examples are written in JSON (sometimes with added comments), but data
+structures can actually be encoded using other formats.
 
 =head1 DESCRIPTION
 
@@ -32,17 +42,14 @@ metadata can be retrieved using the C<meta> action. There are other actions
 defined in the specification; and the protocol can be extended by introducing
 more actions.
 
+One of the main use-cases of this protocol is to provide self-descriptive,
+self-documenting, machine-discoverable API service, much like the goal of SOAP
+and WSDL. However it is much simpler and programmer-friendly than those
+protocols.
+
 =head1 SPECIFICATION VERSION
 
  1.1
-
-=head1 ABSTRACT
-
-This document specifies a simple, extensible, client/server, request/response
-protocol for requesting metadata and performing actions on code entities.
-
-Examples are written in JSON (sometimes with added comments), but data
-structures can actually be encoded using other formats.
 
 =head1 STATUS
 
@@ -51,6 +58,10 @@ so caveat implementor. However, major incompatibility will bump the version to
 1.2 or 2.0.
 
 =head1 TERMINOLOGIES
+
+The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD",
+"SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be
+interpreted as described in RFC 2119.
 
 =over 4
 
@@ -282,7 +293,7 @@ B<description>, etc.
 Example, a C<list> action on the top namespace C</> might return the following:
 
  [200,"OK",
-  ["pl:/Math","pl:/Utils"]
+  ["Math/","Utils/"]
  ]
 
 Another example, a C<list> action on the C<pl:/Math> namespace, with C<type>
@@ -290,15 +301,17 @@ set to C<function> and C<q> to C<multiply>, and C<detail> set to true:
 
  [200,"OK",
   [
-   {"uri": "pl:/Math/multiply2",
+   {"uri": "multiply2",
     "type": "function",
     "summary": "Multiply two numbers"},
 
-   {"uri": "pl:/Math/multmany",
+   {"uri": "multmany",
     "type": "function",
     "summary": "Multiply several numbers"}
   ]
  ]
+
+An C<abs_uri> can also be provided by server for each record.
 
 =head2 Action: B<child_metas>
 
@@ -312,8 +325,8 @@ following:
 
  [200,"OK",
   {
-   "pl:/Math":  {"v":1.1, "summary":"This is metadata for Math"},
-  ,"pl:/Utils": {"v":1.1, "summary":"This is metadata for Utils"}
+   "Math/":  {"v":1.1, "summary":"This is metadata for Math"},
+  ,"Utils/": {"v":1.1, "summary":"This is metadata for Utils"}
   }
  ]
 
@@ -433,6 +446,9 @@ First release of L<Sub::Spec::HTTP::Server>.
 
 L<Rinci>
 
+SPORE,
+L<https://github.com/SPORE/specifications/blob/master/spore_description.pod>.
+
 B<SOAP, WSDL>. Popular in the early 2000's, with similar goals (easier service
 discovery, "simple" request/response protocol which can utilize HTTP or other
 transport layer). Fell out of favor along with the rise of JavaScript and REST
@@ -441,282 +457,31 @@ SOAP was originally created to be the simpler alternative to CORBA.
 
 B<CORBA>.
 
+=head1 HOMEPAGE
+
+Please visit the project's homepage at L<https://metacpan.org/release/Riap>.
+
+=head1 SOURCE
+
+Source repository is at L<https://github.com/sharyanto/perl-Riap>.
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website L<https://rt.cpan.org/Public/Dist/Display.html?Name=Riap>
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
 =head1 AUTHOR
 
 Steven Haryanto <stevenharyanto@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Steven Haryanto.
+This software is copyright (c) 2013 by Steven Haryanto.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
-=head1 CHANGES
-
-=head2 Version 1.1.19 (2012-08-29)
-
-=over 4
-
-=item *
-
-call action: Specify 'dry_run' and 'confirm'.
-
-=item *
-
-call action: Advise not to pass special arguments.
-
-=item *
-
-Riap: Mention tx_id and link to Riap::Transaction.
-
-=back
-
-=head2 Version 1.1.18 (2012-08-17)
-
-=over 4
-
-=item *
-
-"Selamat ulang tahun ke-67, negaraku. Merdeka!"
-
-=item *
-
-Move most details of transaction behavior to Rinci::Transaction 1.1.24, to avoid duplication.
-
-=back
-
-=head2 Version 1.1.17 (2012-08-01)
-
-=over 4
-
-=item *
-
-Allow riap+pipe scheme to specify program arguments.
-
-=back
-
-=head2 Version 1.1.16 (2012-07-31)
-
-=over 4
-
-=item *
-
-Rename Riap::TCP to Riap::Simple.
-
-=item *
-
-Introduce schemes: riap+unix (previously mixed together with riap+tcp), riap+pipe.
-
-=back
-
-=head2 Version 1.1.15 (2012-07-19)
-
-=over 4
-
-=item *
-
-Riap::TCP: Allow single-line request using j<JSON><CRLF>
-
-=back
-
-=head2 Version 1.1.14 (2012-06-22)
-
-=over 4
-
-=item *
-
-Some small changes, mainly transaction status labels (final statuses are in uppercase: C, R, U, X; while transient statuses are in lowercase: i, a, u, d, e).
-
-=item *
-
-Now requires Rinci 1.1.19.
-
-=back
-
-=head2 Version 1.1.13 (2012-05-31)
-
-=over 4
-
-=item *
-
-Some revision and incompatible changes to Riap::Transaction specification: rename requests (begin -> begin_tx, commit -> commit_tx, and so on), tweak some status codes, mention status E (prepared).
-
-=item *
-
-Now requires Rinci 1.1.17.
-
-=back
-
-=head2 Version 1.1.12 (2012-05-03)
-
-=over 4
-
-=item *
-
-(NEW) Riap::Transaction, specification for doing transaction and undo over Riap.
-
-=back
-
-=head2 Version 1.1.11 (2012-04-03)
-
-=over 4
-
-=item *
-
-(REMOVED) Remove mention of 'riap+http' and 'riap+https' as they are useless. Use 'http' and 'https'.
-
-=back
-
-=head2 Version 1.1.10 (2012-04-03)
-
-=over 4
-
-=item *
-
-(Change, or rather define, as it has not been specified formally) 'pm' URI scheme to (or, as) 'pl'.
-
-=back
-
-=head2 Version 1.1.9 (2012-03-08)
-
-=over 4
-
-=item *
-
-Add new action for variable: get
-
-=back
-
-=head2 Version 1.1.8 (2012-03-01)
-
-=over 4
-
-=item *
-
-Add new action for package: child_metas
-
-=item *
-
-HTTP: Add new action: srvinfo
-
-=item *
-
-HTTP: The valid values of 'fmt' is now up to the implementation (except that 'json' still needs to be supported).
-
-=back
-
-=head2 Version 1.1.7 (2012-02-22)
-
-=over 4
-
-=item *
-
-(REMOVE, INCOMPATIBLE) Remove action 'complete_arg_name'. This action can be implemented in the client side by retrieving function metadata using 'meta' action (this requires larger bandwidth, but clients can do caching). It is better to implement this on the client side due to specific requirements like --foo vs -foo, --boolopt as well as --noboolopt (or --no-boolopt), and so on.
-
-=back
-
-=head2 Version 1.1.6 (2012-02-22)
-
-=over 4
-
-=item *
-
-Add new action 'actions'. To list available actions on a code entity, use this action now instead of 'info'.
-
-=item *
-
-(INCOMPATIBLE) Rename 'complete' action to 'complete_arg_val'.
-
-=item *
-
-Add new action 'complete_arg_name'.
-
-=back
-
-=head2 Version 1.1.5 (2012-02-15)
-
-=over 4
-
-=item *
-
-Some fixes (build/deps, examples, 'info' action should contain 'acts')
-
-=item *
-
-and minor updates.
-
-=back
-
-=head2 Version 1.1.4 (2012-02-01)
-
-=over 4
-
-=item *
-
-Declare that in 1.1 series, minor backward compatibility problems between revisions are to be expected.
-
-=item *
-
-Make 'v' request key optional, defaults to 1.1.
-
-=item *
-
-Rename 'ofmt' request key to 'fmt'.
-
-=item *
-
-Change required result keys of 'info' action.
-
-=back
-
-=head2 Version 1.1.3 (2012-01-27)
-
-=over 4
-
-=item *
-
-Specify riap URI scheme (moved from Rinci). - Add Riap::TCP.
-
-=back
-
-=head2 Version 1.1.2 (2012-01-17)
-
-=over 4
-
-=item *
-
-Rename distribution from Rinci-HTTP as Riap.
-
-=back
-
-=head2 Version 1.1.1 (2012-01-15)
-
-=over 4
-
-=item *
-
-No spec changes. Fix misplaced section in POD.
-
-=back
-
-=head2 Version 1.1.0 (2012-01-15)
-
-=over 4
-
-=item *
-
-First release. Renamed from Sub::Spec::HTTP. Now follow the Rinci
-
-=item *
-
-specification instead of Sub::Spec. Generalized to perform actions on
-
-=item *
-
-any code entities instead of just functions. Change terminologies.
-
-=back
-
 =cut
-
