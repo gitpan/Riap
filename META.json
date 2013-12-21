@@ -53,7 +53,7 @@
          "web" : "https://github.com/sharyanto/perl-Riap"
       }
    },
-   "version" : "1.1.21",
+   "version" : "1.1.22",
    "x_Dist_Zilla" : {
       "perl" : {
          "version" : "5.010001"
