@@ -10,7 +10,7 @@ build_requires:
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
-generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132830'
+generated_by: 'Dist::Zilla version 5.006, CPAN::Meta::Converter version 2.132510'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -22,10 +22,10 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Riap
   homepage: https://metacpan.org/release/Riap
   repository: git://github.com/sharyanto/perl-Riap.git
-version: 1.1.20
+version: 1.1.21
 x_Dist_Zilla:
   perl:
-    version: 5.018001
+    version: 5.010001
   plugins:
     -
       class: Dist::Zilla::Plugin::GatherDir
@@ -204,11 +204,11 @@ x_Dist_Zilla:
     -
       class: Dist::Zilla::Plugin::ReadmeFromPod
       name: '@Author::SHARYANTO/ReadmeFromPod'
-      version: 0.21
+      version: 0.18
     -
       class: Dist::Zilla::Plugin::Rinci::Validate
       name: '@Author::SHARYANTO/Rinci::Validate'
-      version: 0.09
+      version: 0.11
     -
       class: Dist::Zilla::Plugin::Test::Compile
       config:

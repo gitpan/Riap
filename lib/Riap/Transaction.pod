@@ -1,9 +1,5 @@
-package Riap::Transaction; # just to make PodWeaver happy
-
-# VERSION
-
-1;
 # ABSTRACT: Transactions/undo/redo over Riap
+# PODNAME: Riap::Transaction
 
 __END__
 
@@ -17,7 +13,7 @@ Riap::Transaction - Transactions/undo/redo over Riap
 
 =head1 VERSION
 
-version 1.1.20
+version 1.1.21
 
 =head1 SYNOPSIS
 
