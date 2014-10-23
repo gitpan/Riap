@@ -13,7 +13,7 @@ Riap::Simple - Simple Riap protocol over any stream socket
 
 =head1 VERSION
 
-This document describes version 1.1.24 of Riap::Simple (from Perl distribution Riap), released on 2014-08-18.
+This document describes version 1.2.0 of Riap::Simple (from Perl distribution Riap), released on 2014-10-23.
 
 =head1 SYNOPSIS
 
@@ -60,7 +60,7 @@ closed.
 
 =head1 PROTOCOL VERSION
 
- 1.1
+ 1.2
 
 =head1 EXAMPLES
 
@@ -81,14 +81,23 @@ Below are some examples of what is sent and received on the wire.
  J12
  [200,"OK",6]
 
- j{"action":"call","uri":"/Math/mult","args":{"a":2,"b":4}}
- J12
- [200,"OK",8]
+ j{"v":1.2,"action":"call","uri":"/Math/mult","args":{"a":2,"b":4}}
+ J27
+ [200,"OK",8,{"riap.v":1.2}]
 
  J44
  {"v":1.1,"action":"info","uri":"/Math/mult"}
- J57
- [200,"OK",{"v":1.1,"type":"function","uri":"/Math/mult"}]
+ J49
+ [200,"OK",{"type":"function","uri":"/Math/mult"}]
+
+An example of sending and returning binary data (Riap v1.2 only):
+
+ j{"v":1.2,"action":"call","uri":"/bitflip","args":{"data:base64":"AAAA"}}
+ J64
+ [200,"OK","////",{"riap.v":1.2,"riap.result_encoding":"base64"}]
+
+The example belows shows calling a function that bit-flips 0x000000 into
+0xffffff.
 
 =head1 FAQ
 
@@ -102,7 +111,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/Riap>.
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/sharyanto/perl-Riap>.
+Source repository is at L<https://github.com/perlancar/perl-Riap>.
 
 =head1 BUGS
 
@@ -114,11 +123,11 @@ feature.
 
 =head1 AUTHOR
 
-Steven Haryanto <stevenharyanto@gmail.com>
+perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Steven Haryanto.
+This software is copyright (c) 2014 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

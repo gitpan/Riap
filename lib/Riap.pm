@@ -1,6 +1,7 @@
 package Riap;
 
-our $VERSION = '1.1.24'; # VERSION
+our $DATE = '2014-10-23'; # DATE
+our $VERSION = '1.2.0'; # VERSION
 
 1;
 # ABSTRACT: Rinci access protocol
@@ -17,7 +18,7 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-This document describes version 1.1.24 of Riap (from Perl distribution Riap), released on 2014-08-18.
+This document describes version 1.2.0 of Riap (from Perl distribution Riap), released on 2014-10-23.
 
 =head1 HOMEPAGE
 
@@ -25,7 +26,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/Riap>.
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/sharyanto/perl-Riap>.
+Source repository is at L<https://github.com/perlancar/perl-Riap>.
 
 =head1 BUGS
 
@@ -37,11 +38,11 @@ feature.
 
 =head1 AUTHOR
 
-Steven Haryanto <stevenharyanto@gmail.com>
+perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Steven Haryanto.
+This software is copyright (c) 2014 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

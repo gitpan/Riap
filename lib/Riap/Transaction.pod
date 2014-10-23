@@ -13,7 +13,7 @@ Riap::Transaction - Transactions/undo/redo over Riap
 
 =head1 VERSION
 
-This document describes version 1.1.24 of Riap::Transaction (from Perl distribution Riap), released on 2014-08-18.
+This document describes version 1.2.0 of Riap::Transaction (from Perl distribution Riap), released on 2014-10-23.
 
 =head1 SYNOPSIS
 
@@ -21,7 +21,7 @@ This document specifies doing transactions/undo/redo over Riap.
 
 =head1 SPECIFICATION VERSION
 
- 1.1
+ 1.2
 
 =head1 SPECIFICATION
 
@@ -99,7 +99,8 @@ Example:
     "tx_commit_time":1336043071, "tx_summary":null},
    {"tx_id": "TX3", "tx_status":"i", "tx_start_time":1336043090,
     "tx_commit_time":null, "tx_summary":"Some summary"},
-  ]
+  ],
+  {"riap.v":1.2}
  ]
 
 =head2 Action: B<undo>
@@ -137,7 +138,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/Riap>.
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/sharyanto/perl-Riap>.
+Source repository is at L<https://github.com/perlancar/perl-Riap>.
 
 =head1 BUGS
 
@@ -149,11 +150,11 @@ feature.
 
 =head1 AUTHOR
 
-Steven Haryanto <stevenharyanto@gmail.com>
+perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Steven Haryanto.
+This software is copyright (c) 2014 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
