@@ -22,7 +22,7 @@ resources:
   bugtracker: https://rt.cpan.org/Public/Dist/Display.html?Name=Riap
   homepage: https://metacpan.org/release/Riap
   repository: git://github.com/perlancar/perl-Riap.git
-version: 1.2.0
+version: 1.2.1
 x_Dist_Zilla:
   perl:
     version: '5.018002'
