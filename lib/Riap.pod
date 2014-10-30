@@ -13,7 +13,7 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-This document describes version 1.2.1 of Riap (from Perl distribution Riap), released on 2014-10-23.
+This document describes version 1.2.2 of Riap (from Perl distribution Riap), released on 2014-10-30.
 
 =head1 SYNOPSIS
 
@@ -359,6 +359,39 @@ function. This is used as confirmation when function can return status 331
 Optional. If set to true, will either pass C<< -dry_run => 1 >> to function
 supporting dry run, or C<< -tx_action => 'check_state' >> to function supporting
 transaction (can more or less be regarded as the dry run equivalent).
+
+=item * B<arg_len> => int
+
+Will be passed to function as special argument C<-arg_len> to send partial
+argument value.
+
+=item * B<arg_part_start> => int
+
+Will be passed to function as special argument C<-arg_part_start> to send
+partial argument value.
+
+=item * B<art_part_len> => int
+
+Will be passed to function as special argument C<-arg_part_len> to send partial
+argument value.
+
+=item * B<res_part_start> => int
+
+Will be passed to function as special argument C<-res_part_start> to request
+partial result.
+
+=item * B<res_part_len> => int
+
+Will be passed to function as special argument C<-res_part_len> to request
+partial result.
+
+=item * B<stream_arg> => bool
+
+Optional. If set to true, then will provide a filehandle or an iterable object
+as argument value for the function, where the function can read data from. And
+will also send special argument C<< -arg_stream => 1 >> to function. Note that
+the function must have exactly a single argument that has its C<streaming>
+property set to true. Otherwise, server MUST send 501 (unimplemented) response.
 
 =back
 

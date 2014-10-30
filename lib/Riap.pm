@@ -1,7 +1,7 @@
 package Riap;
 
-our $DATE = '2014-10-23'; # DATE
-our $VERSION = '1.2.1'; # VERSION
+our $DATE = '2014-10-30'; # DATE
+our $VERSION = '1.2.2'; # VERSION
 
 1;
 # ABSTRACT: Rinci access protocol
@@ -18,7 +18,7 @@ Riap - Rinci access protocol
 
 =head1 VERSION
 
-This document describes version 1.2.1 of Riap (from Perl distribution Riap), released on 2014-10-23.
+This document describes version 1.2.2 of Riap (from Perl distribution Riap), released on 2014-10-30.
 
 =head1 HOMEPAGE
 

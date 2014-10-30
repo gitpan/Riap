@@ -20,7 +20,7 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "Riap",
   "PREREQ_PM" => {
-    "Rinci" => "v1.1.62"
+    "Rinci" => "v1.1.69"
   },
   "TEST_REQUIRES" => {
     "File::Spec" => 0,
@@ -28,7 +28,7 @@ my %WriteMakefileArgs = (
     "IPC::Open3" => 0,
     "Test::More" => 0
   },
-  "VERSION" => "1.2.1",
+  "VERSION" => "1.2.2",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -39,7 +39,7 @@ my %FallbackPrereqs = (
   "File::Spec" => 0,
   "IO::Handle" => 0,
   "IPC::Open3" => 0,
-  "Rinci" => "v1.1.62",
+  "Rinci" => "v1.1.69",
   "Test::More" => 0
 );
 
